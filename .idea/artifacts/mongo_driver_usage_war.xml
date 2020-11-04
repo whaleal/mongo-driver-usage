@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="mongo-driver-usage:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>mongo-driver-usage</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="mongodbdemo.war">
+      <element id="artifact" artifact-name="mongo-driver-usage:war exploded" />
+    </root>
+  </artifact>
+</component>
