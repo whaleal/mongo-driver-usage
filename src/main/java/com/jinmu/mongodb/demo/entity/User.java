@@ -1,4 +1,4 @@
-package entity;
+package com.jinmu.mongodb.demo.entity;
 
 import java.util.Date;
 import java.util.List;

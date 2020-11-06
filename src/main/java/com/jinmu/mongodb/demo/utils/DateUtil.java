@@ -1,4 +1,4 @@
-package utils;
+package com.jinmu.mongodb.demo.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

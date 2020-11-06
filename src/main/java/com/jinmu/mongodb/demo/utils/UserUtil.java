@@ -1,6 +1,7 @@
-package utils;
+package com.jinmu.mongodb.demo.utils;
 
-import entity.User;
+
+import com.jinmu.mongodb.demo.entity.User;
 
 import java.util.*;
 
