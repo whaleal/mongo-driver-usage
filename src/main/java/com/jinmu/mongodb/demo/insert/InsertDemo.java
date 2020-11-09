@@ -77,8 +77,6 @@ public class InsertDemo extends MongoBase {
 
         MongoCollection coll = db.getCollection("test");
 
-
-
         //获取session
         ClientSession session = this.mongoClient.startSession();
 
@@ -118,6 +116,7 @@ public class InsertDemo extends MongoBase {
         //生成添加数据
         List list = new ArrayList();
         for (int i = 0; i < 10; i++) {
+            //从工具类中拿到有值的user
             User user = UserUtil.getUser();
 
             Document document = JSONObject.parseObject(JSON.toJSONString(user), Document.class);

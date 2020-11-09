@@ -27,7 +27,7 @@ public class DeleteDemo extends MongoBase {
 
     /**
      * 单条数据删除
-     * 如果由多条匹配数据，只会删除第一条
+     * 如果匹配多条数据，只会删除第一条
      */
     public void deleteOne(String fieldName,String value){
         MongoDatabase db = this.getDefaultDataBase();
