@@ -5,13 +5,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.jinmu.mongodb.demo.Utils;
 import com.jinmu.mongodb.demo.MongoBase;
 import com.jinmu.mongodb.demo.entity.User;
+import com.jinmu.mongodb.demo.utils.DateUtil;
 import com.jinmu.mongodb.demo.utils.UserUtil;
 import com.mongodb.client.ClientSession;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
 
-import javax.swing.text.Document;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,26 +106,46 @@ public class InsertDemo extends MongoBase {
      * 测试
      */
     public static void main(String[] args) {
+
         MongoClient mongoClient = Utils.getMongoClient();
+
         InsertDemo insertDemo = new InsertDemo(mongoClient);
 
+        //将user转换成document对象
         Document document1 = JSONObject.parseObject(JSON.toJSONString(UserUtil.getUser()), Document.class);
-        //单条数据添加
-        insertDemo.insertOneDocument(document1);
 
-        //批量添加
+        //重新添加date字段
+        document1.put("date", DateUtil.getRandomDate());
+
+        //单条数据添加
+        //insertDemo.insertOneDocument(document1);
+
+
+
+        //批量添加，添加500w条数据
         //生成添加数据
         List list = new ArrayList();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5000000; i++) {
             //从工具类中拿到有值的user
             User user = UserUtil.getUser();
 
+            //将user转换成document
             Document document = JSONObject.parseObject(JSON.toJSONString(user), Document.class);
 
+            //fastJOSN转换成的document，会将date类型变成时间戳，所以重新添加date类型数据
+            document.put("date",DateUtil.getRandomDate());
+
             list.add(document);
+
+            //如果直接list.add()500w条数据的话会内存溢出，所以隔1w条添加，然后再清空list
+            if(i != 0 && i%1000 == 0){
+
+                insertDemo.insertManyDocument(list);
+
+                list.clear();
+            }
         }
 
-        insertDemo.insertManyDocument(list);
 
     }
 

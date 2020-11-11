@@ -226,42 +226,80 @@ public class AggregateDemo extends MongoBase {
     }
 
     /**
-<<<<<<< HEAD
      * 每个月的count字段的总数是多少
-     * db.collectionName.aggregate([{$project:{_id:0,month:{$month:"$date"},count:"$count"}}])
-     * db.collectionName.aggregate([{$match:{_id:0,{$month:"$date"}:{$eq:}}}])
+     *先将日期截取到月份，再根据日期分组并且计算count列的总数
+     * 最后降序
+     * db.collectionName.aggregate([{$project,{day:{$substr:["$date",0,7]}],count:"$count"}},{$group:{_id:"$day",countTotal:{$sum:"$count"}}},{$sort:{"_id":-1}}])
      */
-    public void queryMonthCount(){
+    public Iterable queryMonthCount(){
         MongoDatabase db = this.getDefaultDataBase();
 
         MongoCollection<Document> coll = db.getCollection("test");
 
         AggregateIterable<Document> iterable = coll.aggregate(
                 Arrays.asList(
-                        new Document("$match",new Document("_id",null)),
+                        //list第一个参数
                         new Document("$project",
-                                new Document("_id", 0)
-                                        .append("month",
-                                                new Document("$month", "$date"))
-                                        .append("count", "$count")
-                        )
-                )
+                                new Document("day",
+                                        new Document("$substr",
+                                                Arrays.asList("$date", 0, 7)
+                                        )
+                                ).append("count","$count")
+                        ),
+                        //第二个参数
+                        new Document("$group",
+                                new Document("_id", "$day")
+                                        .append("countTotal",
+                                                new Document("$sum", "$count")
+                                               )
+                                    ),
+                        //第三个参数
+                        new Document("$sort",new Document("_id",-1))
+                            )
         );
-       // AggregateIterable<Document> iterable = coll.aggregate(Arrays.asList(new Document("$match", new Document("_id", 0).append("month", new Document("$eq", new Document("$month", "$date"))))));
-
-        for (Object o:
-             iterable) {
-            System.out.println(o);
-        }
+        return iterable;
 
     }
 
+    /**
+     * 每天的数据量
+     * 先将date使用substr方法截取到day，再根据date分组，同时计算出每组总数
+     * 最后降序
+     * db.collectionName.aggregate([{$project:{day:{$substr:["$date",0,10]}}},{$group:{_id:"$day",number:{$sum:1}}}])
+     */
+    public Iterable queryDayTotal(){
+        MongoDatabase db = this.getDefaultDataBase();
 
-=======
+        MongoCollection<Document> coll = db.getCollection("test");
+
+        AggregateIterable<Document> iterable = coll.aggregate(
+                Arrays.asList(
+                        //list第一个参数
+                        new Document("$project",
+                                new Document("day",
+                                        new Document("$substr", Arrays.asList("$date", 0, 10))
+                                )
+                        ),
+                        //第二个参数
+                        new Document("$group",
+                                new Document("_id", "$day")
+                                        .append("number",
+                                            new Document("$sum", 1)
+                                               )
+                        ),
+                         //第三个参数
+                        new Document("$sort",
+                                new Document("_id",-1)
+                        )
+        ));
+
+        return iterable;
+    }
+
+    /**
      * 这里要测试的方法有点多，暂时没找到更好的测试方法
      * @param args
      */
->>>>>>> origin/master
     public static void main(String[] args) {
         //从utils获取mongoClient
         MongoClient mongoClient = Utils.getMongoClient();
@@ -295,8 +333,16 @@ public class AggregateDemo extends MongoBase {
         //查询出user年龄的平均值
         Iterable iterable6 = aggregateDemo.avgAge();
 
-        //
-        aggregateDemo.queryMonthCount();
+        //每个月的count字段的总数是多少
+        Iterable iterable9 = aggregateDemo.queryMonthCount();
+
+        //每天数据量
+        Iterable iterable8 = aggregateDemo.queryDayTotal();
+
+        for (Object o:
+             iterable9) {
+            System.out.println(o);
+        }
     }
 
 }
