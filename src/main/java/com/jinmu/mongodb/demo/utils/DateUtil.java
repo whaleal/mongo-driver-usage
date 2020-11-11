@@ -8,11 +8,11 @@ import java.util.Date;
  */
 public class DateUtil {
 
-    public static Date getRandomDate(String beginDate,String endDate){
+    public static Date getRandomDate(){
         try {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            Date start = format.parse(beginDate);
-            Date end = format.parse(endDate);
+            Date start = format.parse("1949-01-01");
+            Date end = format.parse("2025-01-01");
 
             if(start.getTime() >= end.getTime()){
                 return null;

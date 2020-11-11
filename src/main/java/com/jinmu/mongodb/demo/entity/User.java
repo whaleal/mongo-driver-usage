@@ -1,5 +1,8 @@
 package com.jinmu.mongodb.demo.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import org.bson.conversions.Bson;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +34,7 @@ public class User {
     private Integer age;
     private List<Object> address;
     private Map<String,Object> abc;
-    private Date date;
+
     private Integer count;
 
     public String getName() {
@@ -66,13 +69,6 @@ public class User {
         this.abc = abc;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
 
     public Integer getCount() {
         return count;
@@ -89,7 +85,6 @@ public class User {
                 ", age=" + age +
                 ", address=" + address +
                 ", abc=" + abc +
-                ", date=" + date +
                 ", count=" + count +
                 '}';
     }

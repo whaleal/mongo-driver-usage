@@ -38,9 +38,6 @@ public class UserUtil {
         abc.put("s",2);
         abc.put("b",4);
         user.setAbc(abc);
-        //date
-        Date randomDate = DateUtil.getRandomDate("2018-01-01", "2020-01-01");
-        user.setDate(randomDate);
         //count
         user.setCount(random.nextInt(200));
 

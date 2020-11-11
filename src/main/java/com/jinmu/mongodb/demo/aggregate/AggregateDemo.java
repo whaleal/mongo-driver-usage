@@ -8,6 +8,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
+import javax.xml.crypto.dom.DOMCryptoContext;
 import java.util.Arrays;
 
 /**
@@ -226,6 +227,36 @@ public class AggregateDemo extends MongoBase {
         return iterable;
     }
 
+    /**
+     * 每个月的count字段的总数是多少
+     * db.collectionName.aggregate([{$project:{_id:0,month:{$month:"$date"},count:"$count"}}])
+     * db.collectionName.aggregate([{$match:{_id:0,{$month:"$date"}:{$eq:}}}])
+     */
+    public void queryMonthCount(){
+        MongoDatabase db = this.getDefaultDataBase();
+
+        MongoCollection<Document> coll = db.getCollection("test");
+
+        AggregateIterable<Document> iterable = coll.aggregate(
+                Arrays.asList(
+                        new Document("$match",new Document("_id",null)),
+                        new Document("$project",
+                                new Document("_id", 0)
+                                        .append("month",
+                                                new Document("$month", "$date"))
+                                        .append("count", "$count")
+                        )
+                )
+        );
+       // AggregateIterable<Document> iterable = coll.aggregate(Arrays.asList(new Document("$match", new Document("_id", 0).append("month", new Document("$eq", new Document("$month", "$date"))))));
+
+        for (Object o:
+             iterable) {
+            System.out.println(o);
+        }
+
+    }
+
 
     public static void main(String[] args) {
         //从utils获取mongoClient
@@ -259,11 +290,9 @@ public class AggregateDemo extends MongoBase {
 
         //查询出user年龄的平均值
         Iterable iterable6 = aggregateDemo.avgAge();
-        for (Object o :
-                iterable7) {
-            System.out.println(o);
 
-        }
+        //
+        aggregateDemo.queryMonthCount();
     }
 
 }
