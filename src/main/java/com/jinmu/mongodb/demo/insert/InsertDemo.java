@@ -33,12 +33,13 @@ public class InsertDemo extends MongoBase {
     /**
      * 单个数据添加
      */
-    public void insertOneDocument(Document document) {
+    public void insertOneDocument(User user) {
         //从基类中拿到db
         MongoDatabase dataBase = this.getDefaultDataBase();
 
+
         //拿到coll
-        MongoCollection coll = dataBase.getCollection("test");
+        MongoCollection<User> coll = dataBase.getCollection("test",User.class);
 
         //获取session
         ClientSession session = this.mongoClient.startSession();
@@ -48,7 +49,8 @@ public class InsertDemo extends MongoBase {
             session.startTransaction();
 
             //添加数据
-            coll.insertOne(session, document);
+            coll.insertOne(session, user);
+
 
             //提交事务
             session.commitTransaction();
@@ -108,13 +110,12 @@ public class InsertDemo extends MongoBase {
         MongoClient mongoClient = Utils.getMongoClient();
         InsertDemo insertDemo = new InsertDemo(mongoClient);
 
-        Document document1 = JSONObject.parseObject(JSON.toJSONString(UserUtil.getUser()), Document.class);
         //单条数据添加
-        insertDemo.insertOneDocument(document1);
+        insertDemo.insertOneDocument(UserUtil.getUser());
 
         //批量添加
         //生成添加数据
-        List list = new ArrayList();
+        /*List list = new ArrayList();
         for (int i = 0; i < 10; i++) {
             //从工具类中拿到有值的user
             User user = UserUtil.getUser();
@@ -124,7 +125,7 @@ public class InsertDemo extends MongoBase {
             list.add(document);
         }
 
-        insertDemo.insertManyDocument(list);
+        insertDemo.insertManyDocument(list);*/
 
     }
 

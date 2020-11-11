@@ -194,9 +194,7 @@ public class AggregateDemo extends MongoBase {
         AggregateIterable<Document> iterable = coll.aggregate(Arrays.asList(
                 new Document("$group",
                         new Document("_id", null)
-                                .append("minAge",
-                                        new Document("$min", "$age")
-                                )
+                                .append("minAge", new Document("$min", "$age"))
                         )
                 )
         );
@@ -226,7 +224,10 @@ public class AggregateDemo extends MongoBase {
         return iterable;
     }
 
-
+    /**
+     * 这里要测试的方法有点多，暂时没找到更好的测试方法
+     * @param args
+     */
     public static void main(String[] args) {
         //从utils获取mongoClient
         MongoClient mongoClient = Utils.getMongoClient();
