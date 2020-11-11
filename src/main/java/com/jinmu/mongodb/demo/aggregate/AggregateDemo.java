@@ -195,9 +195,7 @@ public class AggregateDemo extends MongoBase {
         AggregateIterable<Document> iterable = coll.aggregate(Arrays.asList(
                 new Document("$group",
                         new Document("_id", null)
-                                .append("minAge",
-                                        new Document("$min", "$age")
-                                )
+                                .append("minAge", new Document("$min", "$age"))
                         )
                 )
         );
@@ -228,6 +226,7 @@ public class AggregateDemo extends MongoBase {
     }
 
     /**
+<<<<<<< HEAD
      * 每个月的count字段的总数是多少
      * db.collectionName.aggregate([{$project:{_id:0,month:{$month:"$date"},count:"$count"}}])
      * db.collectionName.aggregate([{$match:{_id:0,{$month:"$date"}:{$eq:}}}])
@@ -258,6 +257,11 @@ public class AggregateDemo extends MongoBase {
     }
 
 
+=======
+     * 这里要测试的方法有点多，暂时没找到更好的测试方法
+     * @param args
+     */
+>>>>>>> origin/master
     public static void main(String[] args) {
         //从utils获取mongoClient
         MongoClient mongoClient = Utils.getMongoClient();

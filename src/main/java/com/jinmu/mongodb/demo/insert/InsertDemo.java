@@ -2,21 +2,17 @@ package com.jinmu.mongodb.demo.insert;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.jinmu.mongodb.demo.Utils;
 import com.jinmu.mongodb.demo.MongoBase;
 import com.jinmu.mongodb.demo.entity.User;
-import com.jinmu.mongodb.demo.utils.DateUtil;
 import com.jinmu.mongodb.demo.utils.UserUtil;
 import com.mongodb.client.ClientSession;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.result.InsertOneResult;
-import org.bson.Document;
 
+import javax.swing.text.Document;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -112,18 +108,13 @@ public class InsertDemo extends MongoBase {
         MongoClient mongoClient = Utils.getMongoClient();
         InsertDemo insertDemo = new InsertDemo(mongoClient);
 
-
-
-        //Document document1 = JSONObject.parseObject(JSON.toJSONString(UserUtil.getUser()), Document.class);
-        Document document1 = JSONObject.parseObject(JSONObject.toJSONString(UserUtil.getUser()), Document.class);
-        document1.put("date", DateUtil.getRandomDate());
-
+        Document document1 = JSONObject.parseObject(JSON.toJSONString(UserUtil.getUser()), Document.class);
         //单条数据添加
         insertDemo.insertOneDocument(document1);
 
         //批量添加
         //生成添加数据
-        /*List list = new ArrayList();
+        List list = new ArrayList();
         for (int i = 0; i < 10; i++) {
             //从工具类中拿到有值的user
             User user = UserUtil.getUser();
@@ -133,7 +124,7 @@ public class InsertDemo extends MongoBase {
             list.add(document);
         }
 
-        insertDemo.insertManyDocument(list);*/
+        insertDemo.insertManyDocument(list);
 
     }
 
