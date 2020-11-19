@@ -1,0 +1,40 @@
+{
+  name:"abc",
+  age:18 随机数,
+  address:[
+  {
+   street:"xxx",
+   road:"xxx"
+  },
+  {
+  address:"unknown"
+  },
+  "unknown"],
+  ABC:{
+  "s":2, 
+  "b":4
+  },
+  date: ISODate("2020-1-1")随机日期,
+  count:100<random int>
+}
+
+# 需求:
+# 插入 500W
+
+
+1. insertOne
+2. insertMany
+3. query
+4. updateOne
+5. updateManay
+6. deleteOne
+7. deleteMany
+8. transaction
+9. aggergate
+10. bulkWrite【这里的批量写入我还是用的insertMany()】
+
+# 每天的数据量是多少？
+# 每个月的count是多少？
+# 年龄最大的人是谁？
+# 年龄最小的人是谁？
+# 年龄的平均数？
